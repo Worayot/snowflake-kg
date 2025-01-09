@@ -18,10 +18,14 @@ connection_parameters = {
 }
 
 try:
-    session = Session.builder.configs(connection_parameters).create()
+    if 'session' not in st.session_state:
+        st.session_state.session = Session.builder.configs(connection_parameters).create()
     print("Connection successful!")
 except Exception as e:
     print(f"Error: {e}")
+
+# Use st.session_state.session throughout your code where needed
+session = st.session_state.session
 
 
 # Default values
