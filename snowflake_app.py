@@ -13,18 +13,21 @@ pd.set_option("max_colwidth", None)
 # Load environment variables
 load_dotenv()
 
-# Snowflake connection parameters
 connection_parameters = {
-    "account": os.getenv("SNOWFLAKE_ACCOUNT"),
-    "user": os.getenv("SNOWFLAKE_USER"),
-    "password": os.getenv("SNOWFLAKE_PASSWORD"),
-    "warehouse": os.getenv("SNOWFLAKE_WAREHOUSE"),
-    "database": os.getenv("SNOWFLAKE_DATABASE"),
-    "schema": os.getenv("SNOWFLAKE_SCHEMA"),
+    "account": st.secrets["SNOWFLAKE_ACCOUNT"],
+    "user": st.secrets["SNOWFLAKE_USER"],
+    "password": st.secrets["SNOWFLAKE_PASSWORD"],
+    "warehouse": st.secrets["SNOWFLAKE_WAREHOUSE"],
+    "database": st.secrets["SNOWFLAKE_DATABASE"],
+    "schema": st.secrets["SNOWFLAKE_SCHEMA"],
 }
 
 # Initialize Snowflake session
-session = Session.builder.configs(connection_parameters).create()
+try:
+    session = Session.builder.configs(connection_parameters).create()
+    st.success("Connected to Snowflake successfully!")
+except Exception as e:
+    st.error(f"Connection Error: {e}")
 
 # Default values
 NUM_CHUNKS = 5
