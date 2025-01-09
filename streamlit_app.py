@@ -17,13 +17,12 @@ connection_parameters = {
     "schema": st.secrets["SNOWFLAKE_SCHEMA"],
 }
 
-# Initialize Snowflake session
 try:
     session = Session.builder.configs(connection_parameters).create()
-    st.success("Connected to Snowflake successfully!")
+    print("Connection successful!")
 except Exception as e:
-    st.error(f"Connection Error: {e}")
-    st.stop()  # Stop execution if connection fails
+    print(f"Error: {e}")
+
 
 # Default values
 NUM_CHUNKS = 5
