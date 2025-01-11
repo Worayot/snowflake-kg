@@ -45,16 +45,7 @@ svc = root.databases[CORTEX_SEARCH_DATABASE].schemas[CORTEX_SEARCH_SCHEMA].corte
 
 # Functions for the Streamlit app
 def config_options():
-    st.sidebar.selectbox('Select your model:', (
-        'mixtral-8x7b',
-        'snowflake-arctic',
-        'mistral-large',
-        'llama3-8b',
-        'llama3-70b',
-        'reka-flash',
-        'mistral-7b',
-        'llama2-70b-chat',
-        'gemma-7b'), key="model_name")
+    st.sidebar.selectbox('Model:', ('mistral-large'), key="model_name")
 
     categories = session.table('docs_chunks_table').select('category').distinct().collect()
 
@@ -175,8 +166,8 @@ def answer_question(myquestion):
     return response, relative_paths
 
 def main():
-    st.title(f":speech_balloon: Chat Document Assistant with Snowflake Cortex")
-    st.write("This is the list of documents you already have and that will be used to answer your questions:")
+    st.title(f"Chat Document Assistant with Snowflake Cortex")
+    st.write("This is the list of documents that will be used to answer the questions:")
     docs_available = session.sql("ls @docs").collect()
     list_docs = []
     for doc in docs_available:
@@ -192,7 +183,7 @@ def main():
             st.markdown(message["content"])
     
     # Accept user input
-    if question := st.chat_input("What do you want to know about your products?"):
+    if question := st.chat_input("Ask me anything about knowledge graph."):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": question})
         # Display user message in chat message container
@@ -204,7 +195,7 @@ def main():
     
             question = question.replace("'","")
     
-            with st.spinner(f"{st.session_state.model_name} thinking..."):
+            with st.spinner(f"Thinking..."):
                 response, relative_paths = answer_question(question)            
                 response = response.replace("'", "")
                 message_placeholder.markdown(response)
