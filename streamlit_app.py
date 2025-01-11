@@ -45,7 +45,7 @@ svc = root.databases[CORTEX_SEARCH_DATABASE].schemas[CORTEX_SEARCH_SCHEMA].corte
 
 # Functions for the Streamlit app
 def config_options():
-    st.sidebar.selectbox('Model:', ('mistral-large',), key="model_name")
+    st.sidebar.selectbox('Model:', ('mistral-large2',), key="model_name")
 
     categories = session.table('docs_chunks_table').select('category').distinct().collect()
 
